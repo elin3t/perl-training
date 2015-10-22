@@ -2,13 +2,12 @@
 use strict;
 use warnings;
 use List::MoreUtils qw(firstidx);
+use Data::Dumper;
 
-my @originals;
-my @replaces;
-my @indexes;
+my %originals;
 my $sentence;
-my $text;
-
+my %indexes;
+my $mov = 0;
 print STDOUT "Please enter 1 line of text\n";
 $sentence = <>;
 chomp($sentence);
@@ -18,28 +17,25 @@ while(<>){
       last;
   }
   my @tmp = split(/\s/,$_);
-  if((scalar @tmp) == 2){
-    push @originals, $tmp[0];
-    push @replaces, $tmp[1];
+  if(scalar @tmp == 2){
+    $originals{$tmp[0]} = $tmp[1];
   }else{
     print STDERR "Error: please enter 2 values for line, original text and replace text, space separated\n";
   }
 }
-#Cases to do test: when replace text are substring of other replce or origin text
-#or a mix that after one or more replace ex. zZ  zzZ
 
-for my $r (0..scalar @originals){
-  if(firstidx{$_ eq @replaces[$r]} @originals ){
-    $sentence =~ s/$originals[$r]/$replaces[$r]/;
-    splice @originals,$r,1;
-    splice @replaces,$r,1;
+foreach my $o (keys %originals){
+  my $tmpi = index $sentence, $o;
+  if( $tmpi > -1 ){
+    $indexes{$o} = $tmpi;
   }
 }
 
-for my $r (0..$#originals){
-    $sentence =~ s/$originals[$r]/$replaces[$r]/;
+ my @keys = sort { $indexes{$a} <=> $indexes{$b} } keys %indexes;
+foreach my $key ( @keys ) {
+  substr($sentence, $indexes{$key}+$mov, length($key)) = $originals{$key};
+  $mov += length($originals{$key})-length($key);
 }
-
 print STDOUT "$sentence\n";
 
  __END__
