@@ -24,7 +24,7 @@ while(<>){
   }
 }
 
-foreach my $o (keys %originals){
+foreach my $o (sort keys %originals){
   $sentence =~ s/([^_])$o([^_])?/$1_$originals{$o}_$2/g;
 }
 $sentence =~ s/_//g;
