@@ -36,6 +36,6 @@ foreach my $key ( @keys ) {
   substr($sentence, $indexes{$key}+$mov, length($key)) = $originals{$key};
   $mov += length($originals{$key})-length($key);
 }
-print STDOUT "$sentence\n";
+print STDOUT "$sentence";
 
  __END__
