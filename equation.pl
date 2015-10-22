@@ -12,7 +12,7 @@ my $c=0;
 sub main(){
   if($b**2 < 4*$a*$c){
     print STDOUT "Solution is not a real number \n";
-    return $b**2 < 4*$a*$c
+    return $b**2 < 4*$a*$c;
   }
   my $x1 = ($b-sqrt($b**2 - 4*$a*$c))/(2*$a);
   my $x2 = ($b+sqrt($b**2 - 4*$a*$c))/(2*$a);
