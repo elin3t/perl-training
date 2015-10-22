@@ -10,11 +10,11 @@ sub is_valid_integer {
 
 
 my $limit = 2;
-print STDOUT "welcome to Prime number list, \nplease enter a number between 2 and 1000000:\n";
+print STDOUT "welcome to Prime number list, \nplease enter a number between 1 and 1000000:\n";
 $limit = <STDIN>;
 chomp($limit);
-if(is_valid_integer($limit) && $limit >= 2 && $limit <= 1000000){
-  for my $number (2..$limit){
+if(is_valid_integer($limit) && $limit >= 1 && $limit <= 1000000){
+  for my $number (1..$limit){
     my $isprime=1;
     for my $divs (2..(ceil($number/2))){
       if($number % $divs == 0){
