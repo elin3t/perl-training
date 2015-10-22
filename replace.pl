@@ -6,11 +6,11 @@ use Data::Dumper;
 
 my %originals;
 my $sentence;
-my %indexes;
-my $mov = 0;
+
 print STDOUT "Please enter 1 line of text\n";
 $sentence = <>;
 chomp($sentence);
+$sentence2 = $sentence;
 print STDOUT "Please, enter space separated strings to match and replace (one pair per line).\n";
 while(<>){
   if($_ eq "\n"){
@@ -25,17 +25,10 @@ while(<>){
 }
 
 foreach my $o (keys %originals){
-  my $tmpi = index $sentence, $o;
-  if( $tmpi > -1 ){
-    $indexes{$o} = $tmpi;
-  }
+  $sentence =~ s/([^_])$o([^_])?/$1_$originals{$o}_$2/g;
 }
+$sentence =~ s/_//g;
 
- my @keys = sort { $indexes{$a} <=> $indexes{$b} } keys %indexes;
-foreach my $key ( @keys ) {
-  substr($sentence, $indexes{$key}+$mov, length($key)) = $originals{$key};
-  $mov += length($originals{$key})-length($key);
-}
 print STDOUT "$sentence";
 
  __END__
