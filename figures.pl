@@ -34,7 +34,7 @@ sub set_color{
 
 sub get_color{
     my $self = shift;
-    $self->{color};
+    return $self->{color};
 }
 
 sub get_distance_two_points{
