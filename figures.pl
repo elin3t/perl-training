@@ -349,7 +349,9 @@ sub ask_point{
     my $fig;
     my $file;
     ($command, $fig, $file)=@ARGV;
-    if ($fig eq "Rectangle" && $command eq "create")
+    $command = lc $command;
+    $fig = lc $fig;
+    if ($fig eq "rectangle" && $command eq "create")
     {
         print STDOUT "Enter the 4 coordinate points, one each line and axis comma separared\n";
 
@@ -365,7 +367,7 @@ sub ask_point{
         print "draw is done in file: rectangle.png\n";
         print color('reset');
     }
-    elsif($fig eq "Triangle" && $command eq "create"){
+    elsif($fig eq "triangle" && $command eq "create"){
         print STDOUT "Enter the 3 coordinate points, one each line and axis comma separared\n";
 
         my $triangle = Triangle->new(figure_type=>"triangle", color=>"blue");
@@ -381,7 +383,7 @@ sub ask_point{
         print "draw is done in file: triangle.png\n";
         print color('reset');
     }
-    elsif($fig eq "Circle" && $command eq "create"){
+    elsif($fig eq "circle" && $command eq "create"){
         print STDOUT "Plase enter the center of the circle: \n ";
         my $center = <STDIN>;
         chomp($center);
@@ -399,7 +401,7 @@ sub ask_point{
         print "draw is done in file: circle.png\n";
         print color('reset');
     }
-    elsif($fig eq "Square" && $command eq "create"){
+    elsif($fig eq "square" && $command eq "create"){
         print STDOUT "Enter the 4 coordinate points, one each line and axis comma separared\n";
 
         my $square = Square->new(figure_type=>"square", color=>"cyan");
