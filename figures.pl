@@ -92,10 +92,10 @@ sub draw {
     my $self = shift;
     my $radio = int($self->get_radio());
     for my $r (0..$radio){
-        print " " x ($radio-$r) . "." x ($r*2) ."\n";
+        print " " x ($radio-$r)**2 . "*" x (($r)**2) ."\n" ;
     }
     for my $r (0..$radio){
-        print " " x ($r) . "." x (($radio-$r)*2) ."\n";
+        print " " x ($r**2) . "*" x (($radio-$r)**2) ."\n" ;
     }
 
 }
@@ -176,7 +176,7 @@ package Triangle;
         $img->lineTo($x3, $y3);
         $img->lineTo($x1, $y1);
 
-        $img->moveTo(10, 160);
+        $img->moveTo(10, 10);
         $img->string("Area is: " . $self->get_area());
 
         open my $out, '>', 'triangle.png' or die;
@@ -330,6 +330,21 @@ use Data::Dumper;
 use Term::ANSIColor;
 use GD::Simple;
 
+
+sub ask_point{
+    my $point1 = <STDIN>;
+    chomp($point1);
+    my @tmp = split(/,\s?/,$point1);
+
+    if (scalar @tmp == 2 && $tmp[0] =~ /\d+/ &&$tmp[1] =~ /\d+/ )
+    {
+
+        return $point1;
+    }
+    print STDERR "wrong data input\n";
+    return ask_point();
+}
+
     my $command;
     my $fig;
     my $file;
@@ -338,19 +353,10 @@ use GD::Simple;
     {
         print STDOUT "Enter the 4 coordinate points, one each line and axis comma separared\n";
 
-        my $point1 = <STDIN>;
-        my $point2 = <STDIN>;
-        my $point3 = <STDIN>;
-        my $point4 = <STDIN>;
-        chomp($point1);
-        chomp($point2);
-        chomp($point3);
-        chomp($point4);
         my $rectangle = Rectangle->new(figure_type=>"rectangle", color=>"black");
-        $rectangle->add_point($point1);
-        $rectangle->add_point($point2);
-        $rectangle->add_point($point3);
-        $rectangle->add_point($point4);
+        while(scalar @{$rectangle->get_points()} < 4){
+            $rectangle->add_point(ask_point());
+        }
         print color($rectangle->get_color());
         print STDOUT "The reactangle area is: " . $rectangle->get_area() . "\n";
         $rectangle->draw();
@@ -362,18 +368,10 @@ use GD::Simple;
     elsif($fig eq "Triangle" && $command eq "create"){
         print STDOUT "Enter the 3 coordinate points, one each line and axis comma separared\n";
 
-        my $point1 = <STDIN>;
-        my $point2 = <STDIN>;
-        my $point3 = <STDIN>;
-
-        chomp($point1);
-        chomp($point2);
-        chomp($point3);
-
         my $triangle = Triangle->new(figure_type=>"triangle", color=>"blue");
-        $triangle->add_point($point1);
-        $triangle->add_point($point2);
-        $triangle->add_point($point3);
+        while(scalar @{$triangle->get_points()} < 3){
+            $triangle->add_point(ask_point());
+        }
 
         print color($triangle->get_color());
         print STDOUT "The triangle's area is: " . $triangle->get_area() . "\n";
@@ -404,19 +402,10 @@ use GD::Simple;
     elsif($fig eq "Square" && $command eq "create"){
         print STDOUT "Enter the 4 coordinate points, one each line and axis comma separared\n";
 
-        my $point1 = <STDIN>;
-        my $point2 = <STDIN>;
-        my $point3 = <STDIN>;
-        my $point4 = <STDIN>;
-        chomp($point1);
-        chomp($point2);
-        chomp($point3);
-        chomp($point4);
         my $square = Square->new(figure_type=>"square", color=>"cyan");
-        $square->add_point($point1);
-        $square->add_point($point2);
-        $square->add_point($point3);
-        $square->add_point($point4);
+        while(scalar @{$square->get_points()} < 4){
+            $square->add_point(ask_point());
+        }
         print color($square->get_color());
         print STDOUT "The square's area is: " . $square->get_area() . "\n";
         $square->draw();
