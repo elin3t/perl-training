@@ -4,6 +4,39 @@ use warnings;
 use Data::Dumper;
 
 my %numbers;
+my %equivalences=(
+    one=>"1",
+    two=>"2",
+    three=>"3",
+    four=>"4",
+    five=>"5",
+    six=>"6",
+    seven=>"7",
+    eight=>"8",
+    nine=>"9",
+    zero=>"0",
+    ten=>"10",
+    eleven=>"11",
+    twelve=>"12",
+    thirteen=>"13",
+    fourteen=>"14",
+    fifteen=>"15",
+    sixteen=>"16",
+    seventeen=>"17",
+    eighteen=>"18",
+    nineteen=>"19",
+    twenty=>"20 ",
+    thirty=>"30 ",
+    forty=>"40 ",
+    fifty=>"50 ",
+    sixty=>"60 ",
+    seventy=>"70 ",
+    eighty=>"80 ",
+    ninety=>"90 ",
+    thousand=>"*1000",
+    hundred=>"*100",
+    millon=>"*1000000"
+);
 
 sub manual_entry {
     print STDOUT "Enter the numbers in english:\n";
@@ -29,43 +62,17 @@ if(scalar @_){
 }
 
 foreach my $key (keys %numbers){
-  my $number = $key;
-  $number =~ s/one/1/ig;
-  $number =~ s/two/2/ig;
-  $number =~ s/three/3/ig;
-  $number =~ s/four/4/ig;
-  $number =~ s/five/5/ig;
-  $number =~ s/six/6/ig;
-  $number =~ s/seven/7/ig;
-  $number =~ s/eight/8/ig;
-  $number =~ s/nine/9/ig;
-  $number =~ s/zero/0/ig;
-  $number =~ s/ten/10/ig;
-  $number =~ s/eleven/11/ig;
-  $number =~ s/twelve/12/ig;
-  $number =~ s/thirteen/13/ig;
-  $number =~ s/fourteen/14/ig;
-  $number =~ s/fifteen/15/ig;
-  $number =~ s/sixteen/16/ig;
-  $number =~ s/seventeen/17/ig;
-  $number =~ s/eighteen/18/ig;
-  $number =~ s/nineteen/19/ig;
-  $number =~ s/twenty/20/ig;
-  $number =~ s/thirty/30/ig;
-  $number =~ s/forty/40/ig;
-  $number =~ s/fifty/50/ig;
-  $number =~ s/sixty/60/ig;
-  $number =~ s/seventy/70/ig;
-  $number =~ s/eighty/80/ig;
-  $number =~ s/ninety/90/ig;
-  $number =~ s/thousand/\*1000/ig;
-  $number =~ s/hundred/\*100/ig;
-  $number =~ s/millon/\*1000000/ig;
-  $number =~ s/\s\*/\*/g;
-  $number =~ s/\s/+/g;
-  $numbers{$key} = eval $number;
-}
+    my $number = $key;
+    $number =~ s/\s/|/g;
+    my $numbere = $key;
 
+    $numbere =~ s/($number)/$equivalences{$1}/g;
+
+    $numbere =~ s/\s\*/\*/g;
+    $numbere =~ s/\s+/+/g;
+
+    $numbers{$key} = eval $numbere;
+}
 
 foreach (sort { ($numbers{$b} <=> $numbers{$a}) } keys %numbers)
 {
