@@ -18,7 +18,7 @@ while(my $t = <STDIN>){
     $t = lc $t;
     if (index $t, ['circle', 'rectangle', 'triangle', 'square'])
     {
-        my $sql = 'SELECT * FROM figure WHERE figure_type = ?';
+        my $sql = 'SELECT figure_color, figure_type, figure_points, radio FROM figure WHERE figure_type = ?';
         my $sth = $dbh->prepare($sql);
         $sth->execute($t);
         print "start of records..\n";

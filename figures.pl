@@ -80,11 +80,12 @@ sub save_in_db{
 1;
 
 package Circle;
+use Try::Tiny;
 our @ISA = qw(Figure);
 sub new{
     my $class = shift;
     my %args = @_;
-    my $self = bless {}, $class;
+    my $self = $class->SUPER::new(figure_type=>"circle", color=>"yellow");
     $self->{radio}=$args{radio}||0;
     $self->{center}=$args{center}||"0,0";
     return $self;
@@ -321,7 +322,7 @@ sub draw_in_file {
 
 package Square;
 
-our @ISA = qw(Rectangle Figure);
+our @ISA = qw(Rectangle);
 sub get_area{
     my $self = shift;
     my @points = $self->get_points();
@@ -469,7 +470,7 @@ sub ask_point{
     }
 
 print STDOUT "\n";
-
+1;
 __END__
 
 my $circle = Circle->new(radio=>3, center=>"0,0");
