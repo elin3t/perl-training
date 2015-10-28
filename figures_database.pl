@@ -16,7 +16,7 @@ while(my $t = <STDIN>){
     }
     chomp($t);
     $t = lc $t;
-    if (grep /$t/, ['circle', 'rectangle', 'triangle', 'square'])
+    if (index $t, ['circle', 'rectangle', 'triangle', 'square'])
     {
         my $sql = 'SELECT * FROM figure WHERE figure_type = ?';
         my $sth = $dbh->prepare($sql);
@@ -24,7 +24,13 @@ while(my $t = <STDIN>){
         print "start of records..\n";
         print color('blue');
         while (my @row = $sth->fetchrow_array) {
-            print "color: $row[1]  type: $row[2]   points: $row[3] " ."radio: $row[4]\n" ? $t eq "circle":"\n" ;
+            if ($t eq "circle")
+            {
+                print "color: $row[1]  type: $row[2]   center: $row[3] radio: $row[4]\n" ;
+            }else{
+                print "color: $row[1]  type: $row[2]   points: $row[3]\n" ;
+            }
+
         }
         print color('reset');
         print "end of records\n";
