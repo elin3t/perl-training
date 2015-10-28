@@ -5,15 +5,29 @@ use Data::Dumper;
 
 my %numbers;
 
-print STDOUT "Enter the numbers in english:\n";
+sub manual_entry {
+    print STDOUT "Enter the numbers in english:\n";
 
-while(my $t = <STDIN>){
-  if($t eq "\n" || $t eq ""){
-      last;
-  }
-  chomp($t);
-  $numbers{$t} = 0;
+    while(my $t = <STDIN>){
+        if($t eq "\n" || $t eq ""){
+            last;
+        }
+        chomp($t);
+        $numbers{$t} = 0;
+    }
 }
+
+sub file_entry {
+    while (my $file = shift) {
+        $numbers{$file} = 0;
+    }
+}
+if(scalar @_){
+    file_entry @_;
+}else{
+    manual_entry();
+}
+
 foreach my $key (keys %numbers){
   my $number = $key;
   $number =~ s/one/1/ig;
