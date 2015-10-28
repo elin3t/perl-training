@@ -26,9 +26,9 @@ while(my $t = <STDIN>){
         while (my @row = $sth->fetchrow_array) {
             if ($t eq "circle")
             {
-                print "color: $row[1]  type: $row[2]   center: $row[3] radio: $row[4]\n" ;
+                print "color: $row[1]\t|| type: $row[2]\t|| center: $row[3]\t||radio: $row[4]\n" ;
             }else{
-                print "color: $row[1]  type: $row[2]   points: $row[3]\n" ;
+                print "color: $row[1]\t|| type: $row[2]\t|| points: $row[3]\n" ;
             }
 
         }
