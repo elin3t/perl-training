@@ -23,11 +23,8 @@ while(<>){
     print STDERR "Error: please enter 2 values for line, original text and replace text, space separated\n";
   }
 }
-
-foreach my $o (sort keys %originals){
-  $sentence =~ s/([^_])$o([^_])?/$1_$originals{$o}_$2/g;
-}
-$sentence =~ s/_//g;
+my $originals = join('|', keys %originals);
+$sentence =~ s/($originals)/$originals{$1}/g;
 
 say STDOUT "$sentence";
 
