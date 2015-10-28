@@ -10,7 +10,7 @@ my $sentence;
 print STDOUT "Please enter 1 line of text\n";
 $sentence = <>;
 chomp($sentence);
-$sentence2 = $sentence;
+
 print STDOUT "Please, enter space separated strings to match and replace (one pair per line).\n";
 while(<>){
   if($_ eq "\n"){
@@ -29,6 +29,6 @@ foreach my $o (sort keys %originals){
 }
 $sentence =~ s/_//g;
 
-print STDOUT "$sentence";
+say STDOUT "$sentence";
 
  __END__
