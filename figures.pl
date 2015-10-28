@@ -5,6 +5,10 @@ use warnings FATAL => 'all';
 
 package Figure;
 use GD::Simple;
+use DBI;
+use Try::Tiny;
+use Data::Dumper;
+
 sub new{
     my $class = shift;
     my %args = @_;
@@ -27,6 +31,11 @@ sub get_points{
     return $self->{points};
 }
 
+sub get_type{
+    my $self = shift;
+    return $self->{figure_type};
+}
+
 sub set_color{
     my $self = shift;
     $self->{color} = shift;
@@ -46,6 +55,26 @@ sub get_distance_two_points{
     my @pointtwo = split(/,\s?/,$p2);
 
     return sqrt(($pointone[0] - $pointtwo[0])**2 + ($pointone[1] - $pointtwo[1])**2 );
+}
+
+sub save_in_db{
+    my $self = shift;
+    try{
+        my $dbh = DBI->connect('DBI:mysql:figures', 'root', '123'
+        ) || die "Could not connect to database";
+        my @points = $self->get_points();
+        my $points_b;
+        #la siguiente linea puede no funcionar porque guarda los puntos pegados
+        $points_b = join (" ",@{$points[0]});
+        $dbh->do(
+            'INSERT INTO figure (figure_color, figure_type, figure_points) VALUES (?, ?, ?)',
+            undef,
+            $self->get_color(), $self->get_type(), $points_b
+        );
+        $dbh->disconnect;
+    }catch{
+        print STDERR "caught error: $_";
+    }
 }
 
 1;
@@ -118,6 +147,22 @@ sub draw_in_file {
 
 }
 
+sub save_in_db{
+    my $self = shift;
+    try{
+        my $dbh = DBI->connect('DBI:mysql:figures', 'root', '123'
+        ) || die "Could not connect to database";
+
+        $dbh->do(
+            'INSERT INTO figure (figure_color, figure_type, figure_points, radio) VALUES (?, ?, ?, ?)',
+            undef,
+            $self->get_color(), $self->get_type(), $self->get_center(), $self->get_radio()
+        );
+        $dbh->disconnect;
+    }catch{
+        print STDERR "caught error: $_";
+    }
+}
 
 1;
 
@@ -365,6 +410,7 @@ sub ask_point{
         print "drawing rectangle in file ... \n";
         $rectangle->draw_in_file();
         print "draw is done in file: rectangle.png\n";
+        $rectangle->save_in_db();
         print color('reset');
     }
     elsif($fig eq "triangle" && $command eq "create"){
@@ -381,6 +427,7 @@ sub ask_point{
         print "drawing triangle in file ... \n";
         $triangle->draw_in_file();
         print "draw is done in file: triangle.png\n";
+        $triangle->save_in_db();
         print color('reset');
     }
     elsif($fig eq "circle" && $command eq "create"){
@@ -390,7 +437,6 @@ sub ask_point{
         print STDOUT "Please enter the radious: \n";
         my $radious = <STDIN>;
         chomp($radious);
-
         my $circle = Circle->new(radio=>$radious,center=>$center);
         $circle->set_color('green');
         print color($circle->get_color());
@@ -399,6 +445,7 @@ sub ask_point{
         print "drawing circle in file ... \n";
         $circle->draw_in_file();
         print "draw is done in file: circle.png\n";
+        $circle->save_in_db();
         print color('reset');
     }
     elsif($fig eq "square" && $command eq "create"){
@@ -414,7 +461,7 @@ sub ask_point{
         print "drawing square in file ... \n";
         $square->draw_in_file();
         print "draw is done in file: square.png\n";
-
+        $square->save_in_db();
         print color('reset');
     }
     else{
