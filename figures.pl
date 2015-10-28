@@ -85,7 +85,7 @@ our @ISA = qw(Figure);
 sub new{
     my $class = shift;
     my %args = @_;
-    my $self = $class->SUPER::new(figure_type=>"circle", color=>"yellow");
+    my $self = $class->SUPER::new(figure_type=>"circle", color=>"green");
     $self->{radio}=$args{radio}||0;
     $self->{center}=$args{center}||"0,0";
     return $self;
