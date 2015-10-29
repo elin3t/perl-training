@@ -21,19 +21,23 @@ sub is_prime_number{
   }
   return 1;
 }
-my @return;
-my $limit = 2;
-print STDOUT "welcome to Prime number list, \nplease enter a number between 1 and 1000000:\n";
-$limit = <STDIN>;
-chomp($limit);
-if(is_valid_integer($limit) && $limit >= 1 && $limit <= 1000000){
-  for(my $number = 1; $number<=$limit; $number+=2){
-    if(is_prime_number($number)){
-      push @return, $number;
+sub main{
+    my @return;
+    print STDOUT "welcome to Prime number list, \nplease enter a number between 1 and 1000000:\n";
+    while(<STDIN>){
+        chomp();
+        if (is_valid_integer($_) && $_ >= 1 && $_ <= 1000000) {
+            for (my $number = 1; $number <= $_; $number += 2) {
+                if (is_prime_number($number)) {
+                    push @return, $number;
+                }
+            }
+            print STDOUT join(' ', @return);
+            print STDOUT "\nEnter other number or enter to exit\n";
+        }else {
+            print STDERR "Please enter a valid number!\n or enter to exit\n"
+        }
     }
-  }
-  print STDOUT join(' ', @return);
-}else{
-  print STDERR "Please enter a valid number!\n"
 }
+main();
 __END__
