@@ -41,12 +41,12 @@ my %equivalences=(
 sub manual_entry {
     print STDOUT "Enter the numbers in english:\n";
 
-    while(my $t = <STDIN>){
-        if($t eq "\n" || $t eq ""){
+    while(<STDIN>){
+        if($_ eq "\n"){
             last;
         }
-        chomp($t);
-        $numbers{$t} = 0;
+        chomp($_);
+        $numbers{$_} = 0;
     }
 }
 
@@ -55,26 +55,35 @@ sub file_entry {
         $numbers{$file} = 0;
     }
 }
-if(scalar @_){
-    file_entry @_;
-}else{
-    manual_entry();
+
+sub main {
+    if (scalar @_) {
+        file_entry @_;
+    }else {
+        manual_entry();
+    }
+
+    foreach my $key (keys %numbers) {
+        my $number = $key;
+        $number =~ s/\s/|/g;
+        my $numbere = $key;
+
+        $numbere =~ s/($number)/$equivalences{$1}/g;
+
+        $numbere =~ s/\s\*/\*/g;
+        $numbere =~ s/\s+/+/g;
+
+        $numbers{$key} = eval $numbere;
+    }
+
+    foreach (sort {
+        ($numbers{$b} <=> $numbers{$a})
+    } keys %numbers)
+    {
+        print STDOUT "$_\n";
+    }
 }
 
-foreach my $key (keys %numbers){
-    my $number = $key;
-    $number =~ s/\s/|/g;
-    my $numbere = $key;
+main();
 
-    $numbere =~ s/($number)/$equivalences{$1}/g;
-
-    $numbere =~ s/\s\*/\*/g;
-    $numbere =~ s/\s+/+/g;
-
-    $numbers{$key} = eval $numbere;
-}
-
-foreach (sort { ($numbers{$b} <=> $numbers{$a}) } keys %numbers)
-{
-    print STDOUT "$_\n";
-}
+__END__
